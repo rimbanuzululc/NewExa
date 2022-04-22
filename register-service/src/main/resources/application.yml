@@ -1,0 +1,30 @@
+server:
+    port: 9001
+
+spring: 
+  application:
+     name : register-service
+
+  datasource: 
+    url : jdbc:mysql://localhost:3306/db_newexa1?useUnicode=yes&characterEncoding=UTF-8&characterSetResults=UTF-8
+    username : 
+    password : 
+  jpa: 
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        connection: 
+          characterEncoding: UTF-8
+          CharSet: UTF-8
+          useUnicode: true
+    show-sql: true 
+    hibernate:
+      ddl-auto: none  
+eureka:
+    client:
+        register-with-eureka: true
+        fetch-registry: true
+        service-url:
+            defaultZone: http://localhost:8761/eureka/
+        instance:
+         hostname: localhost 

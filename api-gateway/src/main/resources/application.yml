@@ -1,0 +1,63 @@
+## YAML Template.
+---
+server: 
+    port: 9191
+    
+spring:
+    application:
+        name: api-gateway
+    cloud:
+        gateway:
+            routes:
+                - id: EMPLOYEE-SERVICE
+                  uri: lb://EMPLOYEE-SERVICE
+                  predicates:
+                      - Path=/employee/**
+                  filter:
+                      - name: CircuitBreaker
+                        args: 
+                            name: LOGIN-SERVICE
+                            fallbackuri: forward:/employeeFallBack
+                            
+                - id: LOGIN-SERVICE
+                  uri: lb://LOGIN-SERVICE
+                  predicates:
+                      - Path=/login/**
+                  filter:
+                      - name: CircuitBreaker
+                        args: 
+                            name: LOGIN-SERVICE
+                            fallbackuri: forward:/loginFallBack
+                            
+                - id: REGISTER-SERVICE
+                  uri: lb://REGISTER-SERVICE
+                  predicates:
+                      - Path=/register/**
+                  filter:
+                      - name: CircuitBreaker
+                        args: 
+                            name: LOGIN-SERVICE
+                            fallbackuri: forward:/registerFallBack
+                            
+hystrix:
+    command:
+        fallbackcmd:
+            execution:
+                isolation:
+                    thread:
+                        timeoutInMilliseconds: 4000
+                        
+management:
+    endpoints:
+        web:
+            exposure:
+                include: hystrix.stream
+        
+eureka:
+    client:
+        register-with-eureka: true
+        fetch-registry: true
+        service-url:
+            defaultZone: http://localhost:8761/eureka/
+        instance:
+         hostname: localhost
