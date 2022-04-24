@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.newexa</groupId>
-	<artifactId>cifchild</artifactId>
+	<artifactId>cifchild-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>cifchild-service</name>
 	<description>Demo project for Spring Boot</description>

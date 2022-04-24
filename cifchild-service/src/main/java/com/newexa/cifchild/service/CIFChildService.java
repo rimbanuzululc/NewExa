@@ -5,10 +5,16 @@
  */
 package com.newexa.cifchild.service;
 
+import com.newexa.cifchild.model.CIFChild;
+import com.newexa.cifchild.model.ParentCifChild;
+import com.newexa.cifchild.model.SubmitCIF;
+
 /**
  *
  * @author hp
  */
-public class CIFChildService {
+public interface CIFChildService {
+    
+    Boolean submit (CIFChild child, ParentCifChild parent);
     
 }

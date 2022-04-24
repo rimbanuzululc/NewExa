@@ -5,6 +5,7 @@
  */
 package com.newexa.cifchild.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,17 +19,26 @@ import lombok.NoArgsConstructor;
  *
  * @author hp
  */
+@Entity
 @Table(name = "exa_jobtitle")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class JobTitle {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected String job;
     protected String jobTitle;
     
+    public JobTitle(){
+        
+    }
+    
+    public JobTitle (String job, String jobTitle) {
+        this.job = job;
+        this.jobTitle = jobTitle;
+    }
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "job")
     public String getJob() {
         return job;
     }
@@ -37,6 +47,7 @@ public class JobTitle {
         this.job = job;
     }
     
+    @Column(name = "jobtitle")
     public String getJobTitle() {
         return jobTitle;
     }

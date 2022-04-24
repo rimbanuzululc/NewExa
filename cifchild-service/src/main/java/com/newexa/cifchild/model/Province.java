@@ -5,27 +5,41 @@
  */
 package com.newexa.cifchild.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
  *
  * @author hp
  */
+@Entity
 @Table(name = "exa_province")
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class Province {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected String idProvince;
     protected String province;
     
+    public Province() {
+    
+    }
+    
+    public Province(String idProvince, String province){
+        this.idProvince = idProvince;
+        this.province = province;
+        
+    }
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idprovince")
     public String getIdProvince() {
         return idProvince;
     }
@@ -33,7 +47,8 @@ public class Province {
     public void setIdProvince(String idProvince) {
         this.idProvince = idProvince;
     }
-
+    
+    @Column(name = "province")
     public String getProvince() {
         return province;
     }

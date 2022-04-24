@@ -5,35 +5,49 @@
  */
 package com.newexa.cifchild.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
  *
  * @author hp
  */
+@Entity
 @Table(name = "exa_gurantor")
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class Gurantor {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected String id;
+    protected String idGurantor;
     protected String gurantor;
     
-    public String getId() {
-        return id;
+    public Gurantor() {
+        
+    }
+    
+    public Gurantor(String idGurantor, String gurantor){
+        this.idGurantor = idGurantor;
+        this.gurantor = gurantor;
+    }
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idgurantor")
+    public String getIdGurantor() {
+        return idGurantor;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdGurantor(String idGurantor) {
+        this.idGurantor = idGurantor;
     }
-
+    
+    @Column(name = "gurantor")
     public String getGurantor() {
         return gurantor;
     }

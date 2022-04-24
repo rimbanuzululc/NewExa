@@ -5,38 +5,50 @@
  */
 package com.newexa.cifchild.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
  *
  * @author hp
  */
-@Table(name = "exa_customerrating")
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "exa_customerrating")
+@Data
 public class CustomerRating {
+    
+    protected int idCustomerRating;
+    protected String customerRating;
+    
+    public CustomerRating() {
+    
+    }
+    
+    public CustomerRating(int idCustomerRating, String customerString) {
+        this.idCustomerRating = idCustomerRating;
+        this.customerRating = customerString;
+    }
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected int id;
-    protected String customerRating;
-    
-    
-    public int getId() {
-        return id;
+    @Column(name = "idcustomerrtating")
+    public int getIdCustomerRating() {
+        return idCustomerRating;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdCustomerRating(int idCustomerRating) {
+        this.idCustomerRating = idCustomerRating;
     }
-
+    
+    
+    @Column(name = "customerrating")
     public String getCustomerRating() {
         return customerRating;
     }

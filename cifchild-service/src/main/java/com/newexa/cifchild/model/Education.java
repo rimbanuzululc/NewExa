@@ -5,6 +5,7 @@
  */
 package com.newexa.cifchild.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,25 +19,35 @@ import lombok.NoArgsConstructor;
  *
  * @author hp
  */
+@Entity
 @Table(name = "exa_education")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Education {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected int id;
+    protected String idEducation;
     protected String education;
-   
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    
+    public Education(){
+        
     }
     
+    public Education(String idEducation, String education){
+        this.idEducation = idEducation;
+        this.education = education;
+    }
+   
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ideducation")
+    public String getIdEducation() {
+        return idEducation;
+    }
+
+    public void setIdEducation(String idEducation) {
+        this.idEducation = idEducation;
+    }
+    
+    @Column(name = "education")
     public String getEducation() {
         return education;
     }

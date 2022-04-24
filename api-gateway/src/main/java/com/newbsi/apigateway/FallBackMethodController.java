@@ -29,4 +29,10 @@ public class FallBackMethodController {
     public String registerServiceFallBackMethod() {
         return "Register Service is too long, try again later!";
     }
+    
+    @GetMapping("/cifChildFallBack")
+    public String cifChildServiceFallBackMethod() {
+        return "CIF Child Service is too long, try again later!";
+    }
+
 }

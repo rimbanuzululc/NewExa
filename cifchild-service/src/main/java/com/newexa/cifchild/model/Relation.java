@@ -5,12 +5,14 @@
  */
 package com.newexa.cifchild.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
@@ -19,23 +21,33 @@ import lombok.NoArgsConstructor;
  */
 @Table(name = "exa_relation")
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class Relation {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected int id;
+    protected String idRelation;
     protected String relation;
     
-    public int getId() {
-        return id;
+    public Relation(){
+        
+    }
+    
+    public Relation(String idRelation, String relation){
+        this.idRelation = idRelation;
+        this.relation = relation;
+    }
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idrelation")
+    public String getIdRelation() {
+        return idRelation;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdRelation(String idRelation) {
+        this.idRelation = idRelation;
     }
-
+    
+    @Column(name = "relation")
     public String getRelation() {
         return relation;
     }

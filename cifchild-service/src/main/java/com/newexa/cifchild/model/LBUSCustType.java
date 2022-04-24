@@ -5,35 +5,49 @@
  */
 package com.newexa.cifchild.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
  *
  * @author hp
  */
+@Entity
 @Table(name = "exa_lbuscusttype")
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class LBUSCustType {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected String id;
+    protected String idlbus;
     protected String LbusCustType; 
     
-    public String getId() {
-        return id;
+    public LBUSCustType(){
+        
+    }
+    
+    public LBUSCustType(String idlbus, String LbusCustType) {
+        this.idlbus = idlbus;
+        this.LbusCustType = LbusCustType;
+    }
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idlbus")
+    public String getIdlbus() {
+        return idlbus;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdlbus(String idlbus) {
+        this.idlbus = idlbus;
     }
-
+    
+    @Column(name = "lbuscusttype")
     public String getLbusCustType() {
         return LbusCustType;
     }

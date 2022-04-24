@@ -5,6 +5,7 @@
  */
 package com.newexa.cifchild.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,17 +19,26 @@ import lombok.NoArgsConstructor;
  *
  * @author hp
  */
+@Entity
 @Table(name = "exa_legal")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Legal {  
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected String idLegal;
     protected String legal;
     
+    public Legal() {
+        
+    }
+    
+    public Legal(String idLegal, String legal) {
+        this.idLegal = idLegal;
+        this.legal = legal;
+    }
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idlegal")
     public String getIdLegal() {
         return idLegal;
     }
@@ -37,6 +47,7 @@ public class Legal {
         this.idLegal = idLegal;
     }
     
+    @Column(name = "legal")
     public String getLegal() {
         return legal;
     }

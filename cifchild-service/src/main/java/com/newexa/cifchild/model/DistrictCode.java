@@ -5,27 +5,42 @@
  */
 package com.newexa.cifchild.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
  *
  * @author hp
  */
+@Entity
 @Table(name = "exa_districtcode")
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class DistrictCode {
 
-    @Id
-    @GeneratedValue()
     protected String idDistrict;
     protected String districtCode;
     protected String idProvince;
     
+    public DistrictCode(){
+        
+    }
+    
+    public DistrictCode (String idDistrict, String districCode, String idProvince){
+        this.idDistrict = idDistrict;
+        this.districtCode = districCode;
+        this.idProvince = idProvince;
+    }
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "iddistrict")
     public String getIdDistrict() {
         return idDistrict;
     }
@@ -33,7 +48,8 @@ public class DistrictCode {
     public void setIdDistrict(String idDistrict) {
         this.idDistrict = idDistrict;
     }
-
+    
+    @Column(name = "districtcode")
     public String getDistrictCode() {
         return districtCode;
     }
@@ -41,7 +57,8 @@ public class DistrictCode {
     public void setDistrictCode(String districtCode) {
         this.districtCode = districtCode;
     }
-
+    
+    @Column(name = "idprovince")
     public String getIdProvince() {
         return idProvince;
     }

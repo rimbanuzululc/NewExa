@@ -5,6 +5,8 @@
  */
 package com.newexa.cifchild.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,25 +19,35 @@ import lombok.NoArgsConstructor;
  *
  * @author hp
  */
+@Entity
 @Table(name = "exa_marital")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Marital {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected String id;
+    protected String idMarital;
     protected String marital;
     
-    public String getId() {
-        return id;
+    public Marital() {
+        
+    }
+    
+    public Marital(String idMarital, String marital) {
+        this.idMarital = idMarital;
+        this.marital = marital;
+    }
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idmarital")
+    public String getIdMarital() {
+        return idMarital;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdMarital(String idMarital) {
+        this.idMarital = idMarital;
     }
-
+    
+    @Column(name = "marital")
     public String getMarital() {
         return marital;
     }

@@ -16,7 +16,7 @@ spring:
                   filter:
                       - name: CircuitBreaker
                         args: 
-                            name: LOGIN-SERVICE
+                            name: EMPLOYEE-SERVICE
                             fallbackuri: forward:/employeeFallBack
                             
                 - id: LOGIN-SERVICE
@@ -36,9 +36,29 @@ spring:
                   filter:
                       - name: CircuitBreaker
                         args: 
-                            name: LOGIN-SERVICE
+                            name: REGISTER-SERVICE
                             fallbackuri: forward:/registerFallBack
                             
+                - id: CIFCHILD-SERVICE
+                  uri: lb://CIFCHILD-SERVICE
+                  predicates:
+                      - Path=/model/**
+                  filter:
+                      - name: CircuitBreaker
+                        args: 
+                            name: CIFCHILD-SERVICE
+                            fallbackuri: forward:/cifChildFallBack
+                            
+                - id: CIFCHILD-SERVICE
+                  uri: lb://CIFCHILD-SERVICE
+                  predicates:
+                      - Path=/CIF/**
+                  filter:
+                      - name: CircuitBreaker
+                        args: 
+                            name: CIFCHILD-SERVICE
+                            fallbackuri: forward:/cifChildFallBack
+                                        
 hystrix:
     command:
         fallbackcmd:

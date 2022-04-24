@@ -5,6 +5,7 @@
  */
 package com.newexa.cifchild.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,25 +20,34 @@ import lombok.NoArgsConstructor;
  * @author hp
  */
 @Entity
-@Table(name = "exa_fundSource")
+@Table(name = "exa_fundsource")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class FundSource {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected int id;
+    protected int idFundSource;
     protected String fundSource;
     
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public FundSource(){
+        
     }
     
+    public FundSource(int idFundSource, String fundSource) {
+        this.idFundSource = idFundSource;
+        this.fundSource = fundSource;
+    }
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idfundsource")
+    public int getIdFundSource() {
+        return idFundSource;
+    }
+
+    public void setIdFundSource(int idFundSource) {
+        this.idFundSource = idFundSource;
+    }
+    
+    @Column(name = "fundsource")
     public String getFundSource() {
         return fundSource;
     }
