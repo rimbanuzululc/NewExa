@@ -16,6 +16,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ParentCIFRepository extends JpaRepository<ParentCifChild, Long>{
     
-    ParentCifChild save(ParentCifChild child);
+    ParentCifChild save(ParentCifChild parent);
         
 }

@@ -7,11 +7,11 @@
     <packaging>pom</packaging>
     <modules>
         <module>employee-service</module>
-        <module>login-service</module>
-        <module>register-service</module>
         <module>service-registry</module>
         <module>api-gateway</module>
         <module>cifchild-service</module>
+        <module>cobaxml</module>
+        <module>tws-service</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

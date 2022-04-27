@@ -60,6 +60,12 @@
                         <version>0.9.1</version>
                         <type>jar</type>
                 </dependency>
+	 <dependency>
+	  <groupId>io.jsonwebtoken</groupId>
+	  <artifactId>jjwt-api</artifactId>
+	  <version>0.10.5</version>
+	  <type>jar</type>
+	 </dependency>
 	</dependencies>
 
 	<dependencyManagement>

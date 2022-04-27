@@ -71,7 +71,10 @@ public class CIFChild {
     protected String customerRating;
     
     protected String cif;
+    protected String status;
     
+    protected Date submitTime;
+    protected Date approvalTime;
     
     public CIFChild(){
         
@@ -82,7 +85,8 @@ public class CIFChild {
                     , String street, String address, String rtrw, String townCountry, String country, String residence, String districCode
                     , String postCode, String sms1, String email1, String mnemonic, String resideyn, String accountOfficer
                     , String altCustId, String segment, String employersName, String employersAdd, String offPhone
-                    , String lbuCustType, String guarantorCode, String sidRelatiBank, String customerRating, String cif) {
+                    , String lbuCustType, String guarantorCode, String sidRelatiBank, String customerRating, String cif, String status,
+                    Date submitTime, Date approvalTime) {
         
         this.idCifChild = idCifChild;
         this.idParentCifChild = idParentCifChild;
@@ -122,6 +126,9 @@ public class CIFChild {
         this.sidRelatiBank = sidRelatiBank;
         this.customerRating = customerRating;
         this.cif = cif;
+        this.status = status;
+        this.submitTime = submitTime;
+        this.approvalTime = approvalTime;
     }
     
     @Id
@@ -452,5 +459,32 @@ public class CIFChild {
 
     public void setIdParentCifChild(int idParentCifChild) {
         this.idParentCifChild = idParentCifChild;
+    }
+    
+    @Column(name = "status")
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    @Column(name = "submittime")
+    public Date getSubmitTime() {
+        return submitTime;
+    }
+
+    public void setSubmitTime(Date submitTime) {
+        this.submitTime = submitTime;
+    }
+    
+    @Column(name = "approvaltime")
+    public Date getApprovalTime() {
+        return approvalTime;
+    }
+
+    public void setApprovalTime(Date approvalTime) {
+        this.approvalTime = approvalTime;
     }
 }

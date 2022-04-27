@@ -8,6 +8,7 @@ package com.newexa.cifchild.service;
 import com.newexa.cifchild.model.CIFChild;
 import com.newexa.cifchild.model.ParentCifChild;
 import com.newexa.cifchild.model.SubmitCIF;
+import java.util.List;
 
 /**
  *
@@ -16,5 +17,11 @@ import com.newexa.cifchild.model.SubmitCIF;
 public interface CIFChildService {
     
     Boolean submit (CIFChild child, ParentCifChild parent);
+    
+    Integer update (CIFChild cifChild);
+    
+    List<CIFChild> listSubmit ();
+    
+    int approval (CIFChild child);
     
 }
