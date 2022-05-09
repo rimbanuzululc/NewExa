@@ -27,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     RestTemplate restTemplate;
     
-    String urlTws = "http://tws-service/twsservice/";
+    String urlTws = "http://localhost:9191/twsservice/";
     
     @Override
     public AccountCustomer save(AccountCustomer accountCustomer) {

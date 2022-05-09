@@ -40,6 +40,8 @@ public class AccountController {
         
         String respon = wadiahValidateResponse.getStatus().getSuccessIndicator().value();
         
+        String responTWS = wadiahValidateResponse.getStatus().getMessages().get(0);
+        
         if (!respon.equals("SUCCSESS")) {
             hasil = 1;
         } else {
@@ -53,7 +55,7 @@ public class AccountController {
             case 0:
                 return ResponseHandler.generateResponse("Succses!", HttpStatus.OK, true, "Success Submit Data!");
             case 1:
-                return ResponseHandler.generateResponse("Failed!", HttpStatus.BAD_GATEWAY, false, "Error TWS! " + "(" + respon + ")");
+                return ResponseHandler.generateResponse("Failed!", HttpStatus.BAD_GATEWAY, false, "Error TWS! " + "(" + responTWS + ")");
             default:
                 return ResponseHandler.generateResponse("Failed!", HttpStatus.BAD_GATEWAY, false, "Failed Submit Data!");
         }
@@ -69,6 +71,7 @@ public class AccountController {
         
         openAccountWadiahResponse = accountService.wadiahResponse(accountCustomer);
         String respon = openAccountWadiahResponse.getStatus().getSuccessIndicator().value();
+        String responTWS = openAccountWadiahResponse.getStatus().getMessages().get(0);
         
         if (!respon.equals("SUCCSESS")) {
             hasil = 1;
@@ -82,7 +85,7 @@ public class AccountController {
             case 0:
                 return ResponseHandler.generateResponse("Succses!", HttpStatus.OK, true, "Success Submit Data!");
             case 1:
-                return ResponseHandler.generateResponse("Failed!", HttpStatus.BAD_GATEWAY, false, "Error TWS! " + "(" + respon + ")");
+                return ResponseHandler.generateResponse("Failed!", HttpStatus.BAD_GATEWAY, false, "Error TWS! " + "(" + responTWS + ")");
             default:
                 return ResponseHandler.generateResponse("Failed!", HttpStatus.BAD_GATEWAY, false, "Failed Submit Data!");
         }
