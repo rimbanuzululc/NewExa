@@ -45,6 +45,7 @@ public class CIFChild {
     protected String address;
     protected String rtRw;
     protected String townCountry;
+    protected String province;
     protected String country;
     protected String residence;
     protected String districCode;
@@ -486,5 +487,14 @@ public class CIFChild {
 
     public void setApprovalTime(Date approvalTime) {
         this.approvalTime = approvalTime;
+    }
+    
+    @Column(name = "province")
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
     }
 }

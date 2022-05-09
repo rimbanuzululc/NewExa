@@ -5,6 +5,7 @@ import com.newexa.twsservice.model.ChildCIF;
 import com.newexa.twsservice.model.CustomerAccount;
 import com.newexa.twsservice.model.CustomerCIF;
 import com.newexa.twsservice.stub.ACCOUNTIDIACMUDOPENR2TWSType;
+import com.newexa.twsservice.stub.ACCOUNTIDIACWADOPENR1TWSType;
 import com.newexa.twsservice.stub.CUSTOMERIDIRETAILCHILDR2TWSType;
 import com.newexa.twsservice.stub.CUSTOMERIDIRETAILSHORTR2TWSType;
 import com.newexa.twsservice.stub.ObjectFactory;
@@ -33,11 +34,23 @@ import com.newexa.twsservice.stub.CUSTOMERIDIRETAILSHORTR2TWSType.GTOWNCOUNTRY;
 import com.newexa.twsservice.stub.CUSTOMERIDIRETAILSHORTR2TWSType.GSTREET;
 import com.newexa.twsservice.stub.CUSTOMERIDIRETAILSHORTR2TWSType.GNAME1;
 import com.newexa.twsservice.stub.CUSTOMERIDIRETAILSHORTR2TWSType.GSHORTNAME;
+import com.newexa.twsservice.stub.EnquiryGetDataCIF;
+import com.newexa.twsservice.stub.EnquiryGetDataCIFResponse;
+import com.newexa.twsservice.stub.EnquiryInput;
+import com.newexa.twsservice.stub.EnquiryInputCollection;
+import com.newexa.twsservice.stub.IDIEGETSINGLECIFType;
+import com.newexa.twsservice.stub.OpenAccountWadiah;
+import com.newexa.twsservice.stub.OpenAccountWadiahResponse;
+import com.newexa.twsservice.stub.OpenAccountWadiahValidate;
+import com.newexa.twsservice.stub.OpenAccountWadiahValidateResponse;
 import com.newexa.twsservice.stub.OpenCIFChild;
 import com.newexa.twsservice.stub.OpenCIFChildResponse;
+import com.newexa.twsservice.stub.OpenCIFChildValidate;
+import com.newexa.twsservice.stub.OpenCIFChildValidateResponse;
 import com.newexa.twsservice.stub.TransactionId;
 import com.newexa.twsservice.stub.WEBSERVICESEEDEPTAO;
 import com.newexa.twsservice.stub.WEBSERVICESEEDEPTAOResponse;
+import java.math.BigInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,7 +62,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/twsservice")
 public class TWSController {
-    @Autowired SoapClient soapClient;
+    @Autowired 
+    SoapClient soapClient;
     
     String url = "http://10.0.147.139:8180/iBSM_TWS/services";
 
@@ -79,7 +93,8 @@ public class TWSController {
         return webservicecustomershortValidateResponse;
     }
 
-@PostMapping(value = "/inquiryAO")
+    //inquiry AO
+    @PostMapping(value = "/inquiryAO")
     public WEBSERVICESEEDEPTAOResponse inquiryAO (@RequestParam(required = true) String transactionId){
         
         ObjectFactory objectFactory = new ObjectFactory();
@@ -102,14 +117,39 @@ public class TWSController {
     }
     
     //Open CIF Child
-    
     @PostMapping(value = "/validateCifChild")
-    public OpenCIFChildResponse openCifChild (@RequestBody(required = true) CustomerCIF customerCIF) {
+    public OpenCIFChildValidateResponse openCifChild (@RequestBody(required = true) ChildCIF childCIF) {
+        
+        ObjectFactory objectFactory = new ObjectFactory();
+        OpenCIFChildValidate cIFChildValidate = new OpenCIFChildValidate();
+        CUSTOMERIDIRETAILCHILDR2TWSType customeridiretailchildrtwst = setCUSTOMERIDIRETAILCHILDR2TWSType(childCIF);
+        
+        WebRequestCommon webRequestCommon = new WebRequestCommon();
+        webRequestCommon.setUserName("TWSDEV");
+        webRequestCommon.setPassword("Bsi321");
+        webRequestCommon.setCompany("ID0010001");
+        
+        OfsFunction ofsFunction = new OfsFunction();
+        ofsFunction.setMessageId("EX20220215103647_9a05f6344c3226ceceff9170966494b6");
+        
+        cIFChildValidate.setWebRequestCommon(webRequestCommon);
+        cIFChildValidate.setOfsFunction(ofsFunction);
+        cIFChildValidate.setCUSTOMERIDIRETAILCHILDR2TWSType(customeridiretailchildrtwst);
+        
+        OpenCIFChildValidateResponse openCIFChildValidateResponse = soapClient.getCIFChildValidate
+                                                                    (url, objectFactory.createOpenCIFChildValidate(cIFChildValidate));
+        
+        return openCIFChildValidateResponse;
+       
+    }
+    
+    //validate CIF Child
+    @PostMapping(value = "/authorCIFChild")
+    public OpenCIFChildResponse authorCIFChild (@RequestBody(required = true) ChildCIF childCIF) {
         
         ObjectFactory objectFactory = new ObjectFactory();
         OpenCIFChild openCIFChild = new OpenCIFChild();
-        
-//        CUSTOMERIDIRETAILCHILDR2TWSType customeridiretailchildrtwst 
+        CUSTOMERIDIRETAILCHILDR2TWSType customeridiretailchildrtwst = setCUSTOMERIDIRETAILCHILDR2TWSType(childCIF);
         
         WebRequestCommon webRequestCommon = new WebRequestCommon();
         webRequestCommon.setUserName("TWSDEV");
@@ -121,14 +161,82 @@ public class TWSController {
         
         openCIFChild.setWebRequestCommon(webRequestCommon);
         openCIFChild.setOfsFunction(ofsFunction);
-//        openCIFChild.setCUSTOMERIDIRETAILCHILDR2TWSType();
+        openCIFChild.setCUSTOMERIDIRETAILCHILDR2TWSType(customeridiretailchildrtwst);
         
-        OpenCIFChildResponse openCIFChildResponse = soapClient.openCIFChildResponse(url, objectFactory.createOpenCIFChild(openCIFChild));
-        
+        OpenCIFChildResponse openCIFChildResponse = soapClient.openCIFChildAuthor(url, objectFactory.createOpenCIFChild(openCIFChild));
+                
         return openCIFChildResponse;
-       
     }
     
+    //Create Easy Wadiah
+    @PostMapping(value = "/validateEasyWadiah")
+    public OpenAccountWadiahValidateResponse openEasyWadiah (@RequestBody(required = true) CustomerAccount customerAccount){
+        
+        ObjectFactory objectFactory = new ObjectFactory();
+        OpenAccountWadiahValidate accountWadiahValidate = new OpenAccountWadiahValidate();
+        ACCOUNTIDIACWADOPENR1TWSType accountidiacwadopenrtwst = setACCOUNTIDIACWADOPENR1TWSType(customerAccount);
+        
+        WebRequestCommon webRequestCommon = new WebRequestCommon();
+        webRequestCommon.setUserName("TWSDEV");
+        webRequestCommon.setPassword("Bsi321");
+        webRequestCommon.setCompany("ID0010001");
+        
+        OfsFunction ofsFunction = new OfsFunction();
+        ofsFunction.setMessageId("EX20220215103647_9a05f6344c3226ceceff9170966494b6");
+        
+        accountWadiahValidate.setWebRequestCommon(webRequestCommon);
+        accountWadiahValidate.setOfsFunction(ofsFunction);
+        accountWadiahValidate.setACCOUNTIDIACWADOPENR1TWSType(accountidiacwadopenrtwst);
+        
+        OpenAccountWadiahValidateResponse wadiahValidate = soapClient.openWadiahValidate(url, objectFactory.createOpenAccountWadiahValidate(accountWadiahValidate));
+        
+        return wadiahValidate;
+    }
+    
+    //Author Easy Wadiah
+    @PostMapping(value = "/authorEasyWadiah")
+    public OpenAccountWadiahResponse authEasyWadiah (@RequestBody(required = true) CustomerAccount customerAccount){
+        
+        ObjectFactory objectFactory = new ObjectFactory();
+        OpenAccountWadiah openAccountWadiah = new OpenAccountWadiah();
+        ACCOUNTIDIACWADOPENR1TWSType accountidiacwadopenrtwst = setACCOUNTIDIACWADOPENR1TWSType(customerAccount);
+        
+        WebRequestCommon webRequestCommon = new WebRequestCommon();
+        webRequestCommon.setUserName("TWSDEV");
+        webRequestCommon.setPassword("Bsi321");
+        webRequestCommon.setCompany("ID0010001");
+        
+        OfsFunction ofsFunction = new OfsFunction();
+        ofsFunction.setMessageId("EX20220215103647_9a05f6344c3226ceceff9170966494b6");
+        
+        openAccountWadiah.setWebRequestCommon(webRequestCommon);
+        openAccountWadiah.setOfsFunction(ofsFunction);
+        openAccountWadiah.setACCOUNTIDIACWADOPENR1TWSType(accountidiacwadopenrtwst);
+        
+        OpenAccountWadiahResponse accountWadiahResponse = soapClient.openWadiahAuthor(url, objectFactory.createOpenAccountWadiah(openAccountWadiah));
+        
+        return accountWadiahResponse;
+    }
+    
+    //enquiryCIF
+    @PostMapping("/enquiryCIF")
+    public EnquiryGetDataCIFResponse getDataCIFResponse (@RequestParam(required = true) String ID ) {
+        
+        ObjectFactory objectFactory = new ObjectFactory();
+        EnquiryGetDataCIF dataCIF = new EnquiryGetDataCIF();
+        EnquiryInput idiEg = setIDIEGETSINGLECIFType(ID);
+        
+        WebRequestCommon webRequestCommon = new WebRequestCommon();
+        webRequestCommon.setUserName("TWSDEV");
+        webRequestCommon.setPassword("Bsi321");
+        webRequestCommon.setCompany("ID0010001");
+        
+        dataCIF.setWebRequestCommon(webRequestCommon);
+        dataCIF.setIDIEGETSINGLECIFType(idiEg);
+        
+        EnquiryGetDataCIFResponse dataCIFResponse = soapClient.enquiryGetDataCIF(url, objectFactory.createEnquiryGetDataCIF(dataCIF));
+        return dataCIFResponse;
+    }
     
     
     @PostMapping(value = "/authorcif")
@@ -208,17 +316,153 @@ public class TWSController {
     public CUSTOMERIDIRETAILCHILDR2TWSType setCUSTOMERIDIRETAILCHILDR2TWSType (ChildCIF childCIF) {
         CUSTOMERIDIRETAILCHILDR2TWSType customeridiretailchildrtwst = new CUSTOMERIDIRETAILCHILDR2TWSType();
         
-        String id = String.valueOf(childCIF.getIdCifChild());
-        customeridiretailchildrtwst.setId(id);
+        System.out.println("Child CIF : "+childCIF.getLbuCustType());
         
-        GSHORTNAME gshortname = new GSHORTNAME();
+        //short name
+        CUSTOMERIDIRETAILCHILDR2TWSType.GSHORTNAME gshortname = new CUSTOMERIDIRETAILCHILDR2TWSType.GSHORTNAME();
         gshortname.getSHORTNAME().add(childCIF.getShortName());
         customeridiretailchildrtwst.setGSHORTNAME(gshortname);
         
+        //name
+        CUSTOMERIDIRETAILCHILDR2TWSType.GNAME1 gname = new CUSTOMERIDIRETAILCHILDR2TWSType.GNAME1();
+        gname.getNAME1().add(childCIF.getName1());
+        customeridiretailchildrtwst.setGNAME1(gname);
         
+        //given names - education
+        customeridiretailchildrtwst.setGIVENNAMES(childCIF.getGivenNames());
+        customeridiretailchildrtwst.setMOTHMAIDEN(childCIF.getMothMaiden());
+        customeridiretailchildrtwst.setPLACEBIRTH(childCIF.getPlaceBirth());
+        customeridiretailchildrtwst.setDATEOFBIRTH((childCIF.getDateOfBirth()));
+        customeridiretailchildrtwst.setCHILDLEGALTYP(childCIF.getChildLegalTyp());
+        customeridiretailchildrtwst.setLEGALIDNO(childCIF.getLegalIdNo());
+        customeridiretailchildrtwst.setGENDER(childCIF.getGender());
+        customeridiretailchildrtwst.setNATIONALITY(childCIF.getNationality());
+        customeridiretailchildrtwst.setEDUCATION(childCIF.getEducation());
         
+        //street domisili
+        CUSTOMERIDIRETAILCHILDR2TWSType.GSTREET gstreet = new CUSTOMERIDIRETAILCHILDR2TWSType.GSTREET();
+        gstreet.getSTREET().add(childCIF.getStreet());
+        customeridiretailchildrtwst.setGSTREET(gstreet);
         
+        //address domisili
+        CUSTOMERIDIRETAILCHILDR2TWSType.GLLADDRESS.MLLADDRESS mlladdress = new CUSTOMERIDIRETAILCHILDR2TWSType.GLLADDRESS.MLLADDRESS();
+        CUSTOMERIDIRETAILCHILDR2TWSType.GLLADDRESS glladdress = new CUSTOMERIDIRETAILCHILDR2TWSType.GLLADDRESS();
+        CUSTOMERIDIRETAILCHILDR2TWSType.GLLADDRESS.MLLADDRESS.SgLLADDRESS slladdress = new CUSTOMERIDIRETAILCHILDR2TWSType.GLLADDRESS.MLLADDRESS.SgLLADDRESS();
+        slladdress.getADDRESS().add(childCIF.getAddress());
+        mlladdress.setSgLLADDRESS(slladdress);
+        glladdress.getMLLADDRESS().add(mlladdress);
+        customeridiretailchildrtwst.setGLLADDRESS(glladdress);
         
+        //rt rw domisili
+        customeridiretailchildrtwst.setRTRW(childCIF.getRtRw());
+        
+        //kelurahan domisili
+        CUSTOMERIDIRETAILCHILDR2TWSType.GTOWNCOUNTRY gtowncountry = new CUSTOMERIDIRETAILCHILDR2TWSType.GTOWNCOUNTRY();
+        gtowncountry.getTOWNCOUNTRY().add(childCIF.getTownCountry());
+        customeridiretailchildrtwst.setGTOWNCOUNTRY(gtowncountry);
+        
+        //country domisili
+        CUSTOMERIDIRETAILCHILDR2TWSType.GCOUNTRY gcountryy = new CUSTOMERIDIRETAILCHILDR2TWSType.GCOUNTRY();
+        gcountryy.getCOUNTRY().add(childCIF.getCountry());
+        customeridiretailchildrtwst.setGCOUNTRY(gcountryy);
+        
+        //province - districtcode domisili
+        customeridiretailchildrtwst.setPROVINCE(childCIF.getProvince());
+        customeridiretailchildrtwst.setRESIDENCE(childCIF.getResidence());
+        customeridiretailchildrtwst.setDISTRICTCODE(childCIF.getDistricCode());
+        
+        //postcode domisili
+        CUSTOMERIDIRETAILCHILDR2TWSType.GPOSTCODE gpostcode = new CUSTOMERIDIRETAILCHILDR2TWSType.GPOSTCODE();
+        gpostcode.getPOSTCODE().add(childCIF.getPostCode());
+        customeridiretailchildrtwst.setGPOSTCODE(gpostcode);
+        
+        //sms1
+        CUSTOMERIDIRETAILCHILDR2TWSType.GSMS1 gsms1 = new CUSTOMERIDIRETAILCHILDR2TWSType.GSMS1();
+        gsms1.getSMS1().add(childCIF.getSms1());
+        customeridiretailchildrtwst.setGSMS1(gsms1);
+        
+        //email
+        CUSTOMERIDIRETAILCHILDR2TWSType.GEMAIL1 gemail1 = new CUSTOMERIDIRETAILCHILDR2TWSType.GEMAIL1();
+        gemail1.getEMAIL1().add(childCIF.getEmail1());
+        customeridiretailchildrtwst.setGEMAIL1(gemail1);
+        
+        customeridiretailchildrtwst.setMNEMONIC("");
+        customeridiretailchildrtwst.setRESIDEYN("Y");
+        customeridiretailchildrtwst.setACCOUNTOFFICER(childCIF.getAccountOfficer());
+        customeridiretailchildrtwst.setALTCUSTID("");
+        customeridiretailchildrtwst.setSEGMENT("");
+        
+        //informasi orang tua / wali
+        CUSTOMERIDIRETAILCHILDR2TWSType.GFUNDPROVNAME gfundprovname = new CUSTOMERIDIRETAILCHILDR2TWSType.GFUNDPROVNAME();
+        CUSTOMERIDIRETAILCHILDR2TWSType.GFUNDPROVNAME.MFUNDPROVNAME mfundprovname = new CUSTOMERIDIRETAILCHILDR2TWSType.GFUNDPROVNAME.MFUNDPROVNAME();
+        mfundprovname.setFUNDPROVNAME(childCIF.getFundProvName());
+        mfundprovname.setFUNDPROVJOB(childCIF.getFundProvJob());
+        mfundprovname.setFUNDPROVPHONE(childCIF.getFundProvPhone());
+        mfundprovname.setFUNDPROVADDR(childCIF.getFundProvAddr());
+        gfundprovname.getMFUNDPROVNAME().add(mfundprovname);
+        customeridiretailchildrtwst.setGFUNDPROVNAME(gfundprovname);
+        
+        customeridiretailchildrtwst.setFUNDLEGALTYPE(childCIF.getFundLegalType());
+        customeridiretailchildrtwst.setFUNLEGALIDNO(childCIF.getFunLegalIdNo());
+        customeridiretailchildrtwst.setFUNPROVGENDER(childCIF.getFunProvGender());
+        customeridiretailchildrtwst.setFUNDMARITSTAT(childCIF.getFundMaritStat());
+        customeridiretailchildrtwst.setFUNPROVRELCU(childCIF.getFunProvRelcu());
+        customeridiretailchildrtwst.setFUNDEDUCATION(childCIF.getFundEducation());
+        customeridiretailchildrtwst.setFUNDRELIGION(childCIF.getFundReligion());
+        customeridiretailchildrtwst.setFUNDMOTHMAIDE(childCIF.getFundMothMaide());
+        customeridiretailchildrtwst.setFUNDPLACEBIRT(childCIF.getFundPlaceBirt());
+        customeridiretailchildrtwst.setFUNDATEBIRTH(childCIF.getFunDateBirth());
+        customeridiretailchildrtwst.setFUNDSTREET(childCIF.getFundStreet());
+        customeridiretailchildrtwst.setFUNDPROVSMS1(childCIF.getFundProvSms1());
+        customeridiretailchildrtwst.setFUNDEMPLOYADD(childCIF.getFundEmployAdd());
+        customeridiretailchildrtwst.setFUNDOCCUPATION(childCIF.getFundOccupation());
+        
+        CUSTOMERIDIRETAILCHILDR2TWSType.GFUNDSOURCE gfundsource = new CUSTOMERIDIRETAILCHILDR2TWSType.GFUNDSOURCE();
+        CUSTOMERIDIRETAILCHILDR2TWSType.GFUNDSOURCE.MFUNDSOURCE mfundsource = new CUSTOMERIDIRETAILCHILDR2TWSType.GFUNDSOURCE.MFUNDSOURCE();
+        mfundsource.setFUNDSOURCE(childCIF.getFundSource());
+        gfundsource.getMFUNDSOURCE().add(mfundsource);
+        customeridiretailchildrtwst.setGFUNDSOURCE(gfundsource);
+        //end data orang tua
+        
+        //alamat identitas
+        CUSTOMERIDIRETAILCHILDR2TWSType.GADDRTYPE.MADDRTYPE maddrtype = new CUSTOMERIDIRETAILCHILDR2TWSType.GADDRTYPE.MADDRTYPE();
+        maddrtype.setADDRCOUNTRY(childCIF.getAddrCountry());
+        maddrtype.setADDRDISTRICT(childCIF.getAddrDistrict());
+        maddrtype.setADDRMUNICIPAL(childCIF.getAddrMunicipal());
+        maddrtype.setADDRPOSTCODE(childCIF.getAddrPostCode());
+        maddrtype.setADDRPROVINCE(childCIF.getAddrProvince());
+        maddrtype.setADDRRTRW(childCIF.getAddrRtRw());
+        maddrtype.setADDRSTREET(childCIF.getAddrStreet());
+        maddrtype.setADDRSUBURBTWN(childCIF.getAddrSuburBtwn());
+        maddrtype.setADDRTYPE(childCIF.getAddrType());
+        CUSTOMERIDIRETAILCHILDR2TWSType.GADDRTYPE gaddrtype = new CUSTOMERIDIRETAILCHILDR2TWSType.GADDRTYPE();
+        gaddrtype.getMADDRTYPE().add(maddrtype);
+        customeridiretailchildrtwst.setGADDRTYPE(gaddrtype);
+        //end alamat identitas
+        
+        //informasi sekolah
+        CUSTOMERIDIRETAILCHILDR2TWSType.SgEMPLOYERSADD semployersadd = new CUSTOMERIDIRETAILCHILDR2TWSType.SgEMPLOYERSADD();
+        semployersadd.getEMPLOYERSADD().add(childCIF.getEmployersAdd());
+        customeridiretailchildrtwst.setSgEMPLOYERSADD(semployersadd);
+        
+        customeridiretailchildrtwst.setEMPLOYERSNAME(childCIF.getEmployersName());
+        
+        CUSTOMERIDIRETAILCHILDR2TWSType.GOFFPHONE goffphone = new CUSTOMERIDIRETAILCHILDR2TWSType.GOFFPHONE();
+        goffphone.getOFFPHONE().add(childCIF.getOffPhone());
+        customeridiretailchildrtwst.setGOFFPHONE(goffphone);
+        //end informasi sekolah
+        
+        //informasi BI
+        customeridiretailchildrtwst.setLBUCUSTTYPE(childCIF.getLbuCustType());
+        customeridiretailchildrtwst.setGUARANTORCODE(childCIF.getGuarantorCode());
+        customeridiretailchildrtwst.setSIDRELATIBANK(childCIF.getSidRelatiBank());
+        
+        CUSTOMERIDIRETAILCHILDR2TWSType.GCUSTOMERRATING gcustomerrating = new CUSTOMERIDIRETAILCHILDR2TWSType.GCUSTOMERRATING();
+        gcustomerrating.getCUSTOMERRATING().add(childCIF.getCustomerRating());
+        customeridiretailchildrtwst.setGCUSTOMERRATING(gcustomerrating);
+        //end informasi BI
+        
+        return customeridiretailchildrtwst;
     }
 
     public CUSTOMERIDIRETAILSHORTR2TWSType setCUSTOMERIDIRETAILSHORTR2TWSType(CustomerCIF customerCIF){
@@ -351,5 +595,34 @@ public class TWSController {
 
         return accountidiacmudopenr2twsType;
     } 
-
+    
+    public ACCOUNTIDIACWADOPENR1TWSType setACCOUNTIDIACWADOPENR1TWSType (CustomerAccount customerAccount) {
+        
+        ACCOUNTIDIACWADOPENR1TWSType accountidiacwadopenrtwst = new ACCOUNTIDIACWADOPENR1TWSType();
+        
+        accountidiacwadopenrtwst.setCUSTOMER(customerAccount.getCifNo());
+        accountidiacwadopenrtwst.setACCOUNTTITLE1((customerAccount.getPrintedName()));
+        accountidiacwadopenrtwst.setCURRENCY(customerAccount.getCurrency());
+        accountidiacwadopenrtwst.setACOPENPURPOSE(customerAccount.getAcopenPurpose());
+        accountidiacwadopenrtwst.setACCOUNTOFFICER(customerAccount.getAccountOfficer());
+        accountidiacwadopenrtwst.setCATEGORY("6020");
+        accountidiacwadopenrtwst.setBONUS("N");
+        accountidiacwadopenrtwst.setZAKAT("N");
+        accountidiacwadopenrtwst.setPASSBOOK("Y");
+        
+        return accountidiacwadopenrtwst;
+    }
+    
+    public EnquiryInput setIDIEGETSINGLECIFType (String cif) {
+        
+        EnquiryInput cIFType = new EnquiryInput();
+        EnquiryInputCollection collection = new EnquiryInputCollection();
+        collection.setColumnName("CUSTUMER.ID");
+        collection.setCriteriaValue(cif);
+        collection.setOperand("EQ");
+        cIFType.getEnquiryInputCollection().add(collection);
+       
+        return cIFType;
+        
+    }
 }

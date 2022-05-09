@@ -58,7 +58,25 @@ spring:
                         args: 
                             name: CIFCHILD-SERVICE
                             fallbackuri: forward:/cifChildFallBack
-                                        
+                
+                - id: tws-service
+                  uri: lb://tws-service
+                  predicates:
+                      - Path=/twsservice/**
+                  filter:
+                      - name: CircuitBreaker
+                        args: 
+                            name: TWS-SERVICE
+                            fallbackuri: forward:/cifChildFallBack
+                - id: ACCOUNT-SERVICE
+                  uri: lb://ACCOUNT
+                  predicates:
+                      - Path=/account/**
+                  filter:
+                      - name: CircuitBreaker
+                        args: 
+                            name: ACCOUNT-SERVICE
+                            fallbackuri: forward:/cifChildFallBack
 hystrix:
     command:
         fallbackcmd:

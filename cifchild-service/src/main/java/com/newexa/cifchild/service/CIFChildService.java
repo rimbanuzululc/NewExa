@@ -6,8 +6,10 @@
 package com.newexa.cifchild.service;
 
 import com.newexa.cifchild.model.CIFChild;
-import com.newexa.cifchild.model.ParentCifChild;
-import com.newexa.cifchild.model.SubmitCIF;
+import com.newexa.cifchild.model.CIFChildTWS;
+import com.newexa.cifchild.stub.EnquiryGetDataCIFResponse;
+import com.newexa.cifchild.stub.OpenCIFChildResponse;
+import com.newexa.cifchild.stub.OpenCIFChildValidateResponse;
 import java.util.List;
 
 /**
@@ -16,12 +18,16 @@ import java.util.List;
  */
 public interface CIFChildService {
     
-    Boolean submit (CIFChild child, ParentCifChild parent);
+    int submit (CIFChildTWS childTWS);
     
-    Integer update (CIFChild cifChild);
+    Integer update (CIFChildTWS cifChild);
     
-    List<CIFChild> listSubmit ();
+    List<CIFChildTWS> listSubmit ();
     
-    int approval (CIFChild child);
+//    int approval (CIFChild child);
     
+    //Connect to TWS
+    OpenCIFChildValidateResponse validateCIFChild (CIFChildTWS childTWS);
+    OpenCIFChildResponse authorFChild (CIFChildTWS childTWS);
+    EnquiryGetDataCIFResponse dataCIFResponse (String id);
 }

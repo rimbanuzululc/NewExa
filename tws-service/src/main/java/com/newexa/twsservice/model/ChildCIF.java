@@ -31,6 +31,7 @@ public class ChildCIF {
     protected String rtRw;
     protected String townCountry;
     protected String country;
+    protected String province;
     protected String residence;
     protected String districCode;
     protected String postCode;
@@ -582,6 +583,16 @@ public class ChildCIF {
     public void setAddrPostCode(String addrPostCode) {
         this.addrPostCode = addrPostCode;
     }
+    
+    
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
     
     
 }
