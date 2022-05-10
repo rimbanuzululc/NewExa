@@ -1,0 +1,39 @@
+.header {
+  overflow: hidden;
+  /*background-color: #f1f1f1;*/
+  padding: 20px 10px;
+}
+
+#div-1 { overflow: hidden; }
+#div-2 { overflow: visible; }
+
+/* Style the header links */
+.header img {
+  float: left;
+  color: black;
+  text-align: center;
+  /*padding: 12px;*/
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 25px;
+  border-radius: 4px;
+}
+
+/* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
+.header img.logo {
+  font-size: 25px;
+  max-width: 240px;
+  padding-top: 0px;
+  padding-left: 20px;
+  font-weight: bold;
+}
+
+body{
+	/*background: rgb(214,235,233);*/
+	height: 100%;
+	width: 100%;
+	background-repeat: no-repeat;
+	background: linear-gradient(180deg, rgba(0,163,157,1) 0%, rgba(107,202,198,1) 55%, rgba(176,227,225,1) 79%, rgba(255,255,255,1) 100%);
+
+}
+
