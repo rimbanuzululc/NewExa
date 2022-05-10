@@ -51,6 +51,7 @@ import com.newexa.twsservice.stub.TransactionId;
 import com.newexa.twsservice.stub.WEBSERVICESEEDEPTAO;
 import com.newexa.twsservice.stub.WEBSERVICESEEDEPTAOResponse;
 import java.math.BigInteger;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -130,7 +131,7 @@ public class TWSController {
         webRequestCommon.setCompany("ID0010001");
         
         OfsFunction ofsFunction = new OfsFunction();
-        ofsFunction.setMessageId("EX20220215103647_9a05f6344c3226ceceff9170966494b6");
+        ofsFunction.setMessageId("EX"+randomMessageId());
         
         cIFChildValidate.setWebRequestCommon(webRequestCommon);
         cIFChildValidate.setOfsFunction(ofsFunction);
@@ -157,7 +158,7 @@ public class TWSController {
         webRequestCommon.setCompany("ID0010001");
         
         OfsFunction ofsFunction = new OfsFunction();
-        ofsFunction.setMessageId("EX20220215103647_9a05f6344c3226ceceff9170966494b6");
+        ofsFunction.setMessageId("EX"+randomMessageId());
         
         openCIFChild.setWebRequestCommon(webRequestCommon);
         openCIFChild.setOfsFunction(ofsFunction);
@@ -182,7 +183,7 @@ public class TWSController {
         webRequestCommon.setCompany("ID0010001");
         
         OfsFunction ofsFunction = new OfsFunction();
-        ofsFunction.setMessageId("EX20220215103647_9a05f6344c3226ceceff9170966494b6");
+        ofsFunction.setMessageId("EX"+randomMessageId());
         
         accountWadiahValidate.setWebRequestCommon(webRequestCommon);
         accountWadiahValidate.setOfsFunction(ofsFunction);
@@ -207,7 +208,7 @@ public class TWSController {
         webRequestCommon.setCompany("ID0010001");
         
         OfsFunction ofsFunction = new OfsFunction();
-        ofsFunction.setMessageId("EX20220215103647_9a05f6344c3226ceceff9170966494b6");
+        ofsFunction.setMessageId("EX"+randomMessageId());
         
         openAccountWadiah.setWebRequestCommon(webRequestCommon);
         openAccountWadiah.setOfsFunction(ofsFunction);
@@ -311,6 +312,15 @@ public class TWSController {
         
         return openAccountMudharabahResponse;
 
+    }
+    
+    public String randomMessageId(){
+        Random rnd = new Random();
+        int number = rnd.nextInt(999999999);
+        String id = "1";
+        String.format("%09d", number);
+        String idNumber =  id + number;
+        return idNumber;
     }
     
     public CUSTOMERIDIRETAILCHILDR2TWSType setCUSTOMERIDIRETAILCHILDR2TWSType (ChildCIF childCIF) {
@@ -605,7 +615,7 @@ public class TWSController {
         accountidiacwadopenrtwst.setCURRENCY(customerAccount.getCurrency());
         accountidiacwadopenrtwst.setACOPENPURPOSE(customerAccount.getAcopenPurpose());
         accountidiacwadopenrtwst.setACCOUNTOFFICER(customerAccount.getAccountOfficer());
-        accountidiacwadopenrtwst.setCATEGORY("6020");
+        accountidiacwadopenrtwst.setCATEGORY("6007");
         accountidiacwadopenrtwst.setBONUS("N");
         accountidiacwadopenrtwst.setZAKAT("N");
         accountidiacwadopenrtwst.setPASSBOOK("Y");
